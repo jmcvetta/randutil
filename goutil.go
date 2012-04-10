@@ -32,13 +32,13 @@ import (
 
 const (
 	// Set of characters to use for generating random strings
-	chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz" +
-		"~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
+	Alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz"
+	Ascii = Alphanumeric + "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
 // RandString returns a random string no more than at least min and no more 
 // than max characters long.
-func RandString(min, max int) string {
+func RandString(min, max int, charset string) string {
 	//
 	// First determine the length of string to be generated
 	//
@@ -52,7 +52,7 @@ func RandString(min, max int) string {
 	}
 	r = int(b.Int64())
 	strlen := min + r
-	charlen := len(chars)
+	charlen := len(charset)
 	randstr := ""
 	for i := 0; i < strlen; i++ {
 		b, err = rand.Int(rand.Reader, big.NewInt(int64(charlen-1)))
@@ -60,8 +60,12 @@ func RandString(min, max int) string {
 			panic(err) // WTF?
 		}
 		r = int(b.Int64())
-		c := string(chars[r])
+		c := string(charset[r])
 		randstr += c
 	}
 	return randstr
+}
+
+func RandAlphanumeric(min, max int) string {
+	return RandString(min, max, Alphanumeric)
 }
