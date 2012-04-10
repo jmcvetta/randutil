@@ -36,9 +36,9 @@ const (
 	"~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
-// randString returns a random string no more than at least min and no more 
+// RandString returns a random string no more than at least min and no more 
 // than max characters long.
-func randString(min, max int) string {
+func RandString(min, max int) string {
 	//
 	// First determine the length of string to be generated
 	//
