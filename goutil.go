@@ -1,6 +1,6 @@
 /*
-Goutil
-A Motley Assortment of Utilities for the Go Language
+                                    Goutil
+             A Motley Assortment of Utilities for the Go Language
 
 
 @author: Jason McVetta <jason.mcvetta@gmail.com>
@@ -32,8 +32,8 @@ import (
 
 const (
 	// Set of characters to use for generating random strings
-	chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz" + 
-	"~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
+	chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz" +
+		"~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
 // RandString returns a random string no more than at least min and no more 
@@ -65,4 +65,3 @@ func RandString(min, max int) string {
 	}
 	return randstr
 }
-
