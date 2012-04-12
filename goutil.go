@@ -27,13 +27,15 @@ package goutil
 
 import (
 	"crypto/rand"
+	"fmt"
+	"log"
 	"math/big"
 )
 
 const (
 	// Set of characters to use for generating random strings
 	Alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz"
-	Ascii = Alphanumeric + "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
+	Ascii        = Alphanumeric + "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
 // RandString returns a random string no more than at least min and no more 
@@ -45,13 +47,27 @@ func RandString(min, max int, charset string) string {
 	var err error  // Holds errors
 	var b *big.Int // Holds random bigints
 	var r int      // Holds random integers
-	maxRand := max - min
-	b, err = rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
-	if err != nil {
-		panic(err) // WTF?
+	var strlen int // Length of random string to generate
+	switch {
+	case max == min:
+		strlen = max
+	case max > min:
+		// Choose a random string lenth between min and max
+		maxRand := max - min
+		b, err = rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
+		if err != nil {
+			panic(err) // WTF?
+		}
+		r = int(b.Int64())
+		strlen = min + r
+	case min < max:
+		msg := "Min (%s) cannot be greater than max (%s)!"
+		msg = fmt.Sprintf(msg, min, max)
+		log.Panic(msg)
 	}
-	r = int(b.Int64())
-	strlen := min + r
+	//
+	// Generate a random string that is strlen characters long
+	//
 	charlen := len(charset)
 	randstr := ""
 	for i := 0; i < strlen; i++ {
