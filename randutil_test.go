@@ -23,7 +23,7 @@ Goutil.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-package goutil
+package randutil
 
 import (
 	"math/rand"
