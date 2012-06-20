@@ -27,61 +27,84 @@ package randutil
 
 import (
 	"crypto/rand"
-	"fmt"
-	"log"
+	"errors"
 	"math/big"
 )
 
 const (
 	// Set of characters to use for generating random strings
-	Alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 abcdefghijklmnopqrstuvwxyz"
+	Alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"
 	Ascii        = Alphanumeric + "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
-// RandString returns a random string no more than at least min and no more 
-// than max characters long.
-func RandString(min, max int, charset string) string {
-	//
-	// First determine the length of string to be generated
-	//
-	var err error  // Holds errors
-	var b *big.Int // Holds random bigints
-	var r int      // Holds random integers
-	var strlen int // Length of random string to generate
+var MinMaxError = errors.New("Min cannot be greater than max.")
+
+// IntRange returns a random integer in the range from min to max.
+func IntRange(min, max int) (int, error) {
+	var result int
 	switch {
 	case max == min:
-		strlen = max
+		result = max
 	case max > min:
 		// Choose a random string lenth between min and max
 		maxRand := max - min
-		b, err = rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
+		b, err := rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
 		if err != nil {
-			panic(err) // WTF?
+			return result, err
 		}
-		r = int(b.Int64())
-		strlen = min + r
-	case min < max:
-		msg := "Min (%s) cannot be greater than max (%s)!"
-		msg = fmt.Sprintf(msg, min, max)
-		log.Panic(msg)
+		result = min + int(b.Int64())
+	case min > max:
+		// Fail with error
+		return result, MinMaxError
 	}
-	//
-	// Generate a random string that is strlen characters long
-	//
+	return result, nil
+}
+
+// String returns a random string n characters long, composed of entities 
+// from charset.
+func String(n int, charset string) (string, error) {
+	var randstr string // Random string to return
 	charlen := len(charset)
-	randstr := ""
-	for i := 0; i < strlen; i++ {
-		b, err = rand.Int(rand.Reader, big.NewInt(int64(charlen-1)))
+	// This is probably not the most efficient algorithm
+	for i := 0; i < n; i++ {
+		b, err := rand.Int(rand.Reader, big.NewInt(int64(charlen-1)))
 		if err != nil {
-			panic(err) // WTF?
+			return randstr, err
 		}
-		r = int(b.Int64())
+		r := int(b.Int64())
 		c := string(charset[r])
 		randstr += c
 	}
-	return randstr
+	return randstr, nil
 }
 
-func RandAlphanumeric(min, max int) string {
-	return RandString(min, max, Alphanumeric)
+// StringRange returns a random string at least min and no more than max 
+// characters long, composed of entitites from charset.
+func StringRange(min, max int, charset string) (string, error) {
+	//
+	// First determine the length of string to be generated
+	//
+	var err error      // Holds errors
+	var strlen int     // Length of random string to generate
+	var randstr string // Random string to return
+	strlen, err = IntRange(min, max)
+	if err != nil {
+		return randstr, err
+	}
+	randstr, err = String(strlen, charset)
+	if err != nil {
+		return randstr, err
+	}
+	return randstr, nil
+}
+
+// AlphaRange returns a random alphanumeric string at least min and no more 
+// than max characters long.
+func AlphaStringRange(min, max int) (string, error) {
+	return StringRange(min, max, Alphanumeric)
+}
+
+// AlphaString returns a random alphanumeric string n characters long.
+func AlphaString(n int) (string, error) {
+	return String(n, Alphanumeric)
 }
