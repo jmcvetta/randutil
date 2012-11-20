@@ -5,6 +5,7 @@ package randutil
 
 import (
 	"fmt"
+//	"log"
 	"math/rand"
 	"testing"
 )
@@ -63,5 +64,41 @@ func TestRandonimity(t *testing.T) {
 	if s1 == s2 {
 		msg := "Generated two identical 'random' strings - this is probably an error"
 		t.Error(msg)
+	}
+}
+
+// TestChoice tests that over the course of 1,000,000 calls on the same 100
+// possible choices, the Choice() function returns every possible choice at
+// least once.  Note, there is a VERY small chance this test could fail by
+// random chance even when the code is working correctly.
+func TestChoice(t *testing.T) {
+	// Populate an array of random integers.
+	choices := []int{}
+	for i := 0; i < 100; i++ {
+		randint, err := IntRange(0, 999999)
+		if err != nil {
+			t.Error(err)
+		}
+		choices = append(choices, randint)
+	}
+	// Create a map associating each possible choice with a bool.
+	chosen := make(map[int]bool)
+	for  _, v := range choices {
+		chosen[v] = false
+	}
+	// Run Choice() a million times, and record which of the possible choices it returns.
+	for i := 0; i < 1000000; i++ {
+		c, err := ChoiceInt(choices)
+		if err != nil {
+			t.Error(err)
+		}
+		chosen[c] = true
+	}
+	// Fail if any of the choices was not chosen even once.
+	for _, v := range chosen {
+		if v == false {
+			msg := "In 1,000,000 passes Choice() failed to return all 100 possible choices.  Something is probably wrong."
+			t.Error(msg)
+		}
 	}
 }

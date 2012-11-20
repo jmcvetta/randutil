@@ -88,3 +88,21 @@ func AlphaStringRange(min, max int) (string, error) {
 func AlphaString(n int) (string, error) {
 	return String(n, Alphanumeric)
 }
+
+// ChoiceString returns a random selection from an array of strings.
+func ChoiceString(choices []string) (string, error) {
+	var winner string
+	length := len(choices)
+	i, err := IntRange(0, length)
+	winner = choices[i]
+	return winner, err
+}
+
+// ChoiceInt returns a random selection from an array of integers.
+func ChoiceInt(choices []int) (int, error) {
+	var winner int
+	length := len(choices)
+	i, err := IntRange(0, length)
+	winner = choices[i]
+	return winner, err
+}
