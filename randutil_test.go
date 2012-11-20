@@ -5,9 +5,15 @@ package randutil
 
 import (
 	"fmt"
-//	"log"
+	"log"
+	"math"
 	"math/rand"
 	"testing"
+)
+
+var (
+	stringChoices []string
+	intChoices    []int
 )
 
 // Test that AlphaStringRange produces a string within specified min/max length
@@ -72,23 +78,14 @@ func TestRandonimity(t *testing.T) {
 // least once.  Note, there is a VERY small chance this test could fail by
 // random chance even when the code is working correctly.
 func TestChoice(t *testing.T) {
-	// Populate an array of random integers.
-	choices := []int{}
-	for i := 0; i < 100; i++ {
-		randint, err := IntRange(0, 999999)
-		if err != nil {
-			t.Error(err)
-		}
-		choices = append(choices, randint)
-	}
 	// Create a map associating each possible choice with a bool.
 	chosen := make(map[int]bool)
-	for  _, v := range choices {
+	for _, v := range intChoices {
 		chosen[v] = false
 	}
 	// Run Choice() a million times, and record which of the possible choices it returns.
 	for i := 0; i < 1000000; i++ {
-		c, err := ChoiceInt(choices)
+		c, err := ChoiceInt(intChoices)
 		if err != nil {
 			t.Error(err)
 		}
@@ -100,5 +97,55 @@ func TestChoice(t *testing.T) {
 			msg := "In 1,000,000 passes Choice() failed to return all 100 possible choices.  Something is probably wrong."
 			t.Error(msg)
 		}
+	}
+}
+
+// BenchmarkChoiceInt runs a benchmark on the ChoiceInt function.
+func BenchmarkChoiceInt(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := ChoiceInt(intChoices)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+}
+
+// BenchmarkChoiceString runs a benchmark on the ChoiceString function.
+func BenchmarkChoiceString(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := ChoiceString(stringChoices)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+}
+
+func BenchmarkInt(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := IntRange(0, math.MaxInt32)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+}
+
+// init populates two arrays of random choices, intChoices and stringChoices,
+// which will be used by various test and benchmark functions.
+func init() {
+	// Random integers
+	for i := 0; i < 100; i++ {
+		randint, err := IntRange(0, 999999)
+		if err != nil {
+			log.Panicln(err)
+		}
+		intChoices = append(intChoices, randint)
+	}
+	// Random strings
+	for i := 0; i < 100; i++ {
+		randstr, err := AlphaString(32)
+		if err != nil {
+			log.Panicln(err)
+		}
+		stringChoices = append(stringChoices, randstr)
 	}
 }
