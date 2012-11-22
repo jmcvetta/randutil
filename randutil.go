@@ -117,7 +117,8 @@ type Choice struct {
 // WeightedChoice used weighted random selection to return one of the supplied
 // choices.  Weights of 0 are never selected.  All other weight values are
 // relative.  E.g. if you have two choices both weighted 3, they will be
-// returned equally often.
+// returned equally often; and each will be returned 3 times as often as a
+// choice weighted 1.
 func WeightedChoice(choices []Choice) (Choice, error) {
 	// Based on this algorithm:
 	//     http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/
