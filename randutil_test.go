@@ -5,10 +5,15 @@ package randutil
 
 import (
 	"fmt"
+	"github.com/bmizerany/assert"
 	"log"
 	"math"
 	"math/rand"
 	"testing"
+)
+
+const (
+	maxIntRange = 999999
 )
 
 var (
@@ -100,6 +105,39 @@ func TestChoice(t *testing.T) {
 	}
 }
 
+// TestWeightedChoice assembles a list of choices, weighted 0-9, and tests that
+// over the course of 1,000,000 calls to WeightedChoice() each choice is
+// returned more often than choices with a lower weight.
+func TestWeightedChoice(t *testing.T) {
+	// Make weighted choices
+	var choices []Choice
+	chosenCount := make(map[Choice]int)
+	for i := 0; i < 10; i++ {
+		c := Choice{
+			Weight: i,
+			Item:   i,
+		}
+		choices = append(choices, c)
+		chosenCount[c] = 0
+	}
+	// Run WeightedChoice() a million times, and record how often it returns each
+	// of the possible choices.
+	for i := 0; i < 1000000; i++ {
+		c, err := WeightedChoice(choices)
+		if err != nil {
+			t.Error(err)
+		}
+		chosenCount[c] += 1
+	}
+	// Test that higher weighted choices were chosen more often than their lower
+	// weighted peers.
+	for i, c := range choices[0 : len(choices)-1] {
+		next := choices[i+1]
+		expr := chosenCount[c] < chosenCount[next]
+		assert.T(t, expr)
+	}
+}
+
 // BenchmarkChoiceInt runs a benchmark on the ChoiceInt function.
 func BenchmarkChoiceInt(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -132,9 +170,10 @@ func BenchmarkInt(b *testing.B) {
 // init populates two arrays of random choices, intChoices and stringChoices,
 // which will be used by various test and benchmark functions.
 func init() {
+	log.SetFlags(log.Ltime | log.Lshortfile)
 	// Random integers
 	for i := 0; i < 100; i++ {
-		randint, err := IntRange(0, 999999)
+		randint, err := IntRange(0, maxIntRange)
 		if err != nil {
 			log.Panicln(err)
 		}

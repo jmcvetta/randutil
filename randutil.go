@@ -106,3 +106,30 @@ func ChoiceInt(choices []int) (int, error) {
 	winner = choices[i]
 	return winner, err
 }
+
+type Choice struct {
+	Weight int
+	Item   interface{}
+}
+
+func WeightedChoice(choices []Choice) (Choice, error) {
+	// Based on this algorithm:
+	//     http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/
+	var ret Choice
+	sum := 0
+	for _, c := range choices {
+		sum += c.Weight
+	}
+	r, err := IntRange(0, sum)
+	if err != nil {
+		return ret, err
+	}
+	for _, c := range choices {
+		r -= c.Weight
+		if r < 0 {
+			return c, nil
+		}
+	}
+	err = errors.New("Internal error - code should not reach this point")
+	return ret, err
+}
