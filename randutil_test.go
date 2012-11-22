@@ -168,7 +168,7 @@ func BenchmarkIntRange(b *testing.B) {
 	}
 }
 
-// BenchmarkIntRange runs a benchmark on the IntRange function.
+// BenchmarkIntRange runs a benchmark on the WeightedChoice function.
 func BenchmarkWeightedChoice(b *testing.B) {
 	// Create some random choices and weights before we start
 	b.StopTimer()
