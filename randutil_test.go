@@ -191,7 +191,7 @@ func BenchmarkWeightedChoice(b *testing.B) {
 	// Run the benchmark
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		_, err := IntRange(0, math.MaxInt32)
+		_, err := WeightedChoice(choices)
 		if err != nil {
 			b.Error(err)
 		}
