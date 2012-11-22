@@ -107,11 +107,17 @@ func ChoiceInt(choices []int) (int, error) {
 	return winner, err
 }
 
+// A Choice contains a generic item and a weight controlling the frequency with
+// which it will be selected.
 type Choice struct {
 	Weight int
 	Item   interface{}
 }
 
+// WeightedChoice used weighted random selection to return one of the supplied
+// choices.  Weights of 0 are never selected.  All other weight values are
+// relative.  E.g. if you have two choices both weighted 3, they will be
+// returned equally often.
 func WeightedChoice(choices []Choice) (Choice, error) {
 	// Based on this algorithm:
 	//     http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/

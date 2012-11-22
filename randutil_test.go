@@ -158,7 +158,8 @@ func BenchmarkChoiceString(b *testing.B) {
 	}
 }
 
-func BenchmarkInt(b *testing.B) {
+// BenchmarkIntRange runs a benchmark on the IntRange function.
+func BenchmarkIntRange(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := IntRange(0, math.MaxInt32)
 		if err != nil {
