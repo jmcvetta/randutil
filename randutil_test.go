@@ -168,6 +168,37 @@ func BenchmarkIntRange(b *testing.B) {
 	}
 }
 
+// BenchmarkIntRange runs a benchmark on the IntRange function.
+func BenchmarkWeightedChoice(b *testing.B) {
+	// Create some random choices and weights before we start
+	b.StopTimer()
+	choices := []Choice{}
+	for i := 0; i < 100; i++ {
+		s, err := AlphaString(64)
+		if err != nil {
+			b.Error(err)
+		}
+		w, err := IntRange(1, 10)
+		if err != nil {
+			b.Error(err)
+		}
+		c := Choice{
+			Item: s,
+			Weight: w,
+		}
+		choices = append(choices, c)
+	}
+	// Run the benchmark
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, err := IntRange(0, math.MaxInt32)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+}
+
+
 // init populates two arrays of random choices, intChoices and stringChoices,
 // which will be used by various test and benchmark functions.
 func init() {
