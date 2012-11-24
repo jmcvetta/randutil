@@ -183,7 +183,7 @@ func BenchmarkWeightedChoice(b *testing.B) {
 			b.Error(err)
 		}
 		c := Choice{
-			Item: s,
+			Item:   s,
 			Weight: w,
 		}
 		choices = append(choices, c)
@@ -197,7 +197,6 @@ func BenchmarkWeightedChoice(b *testing.B) {
 		}
 	}
 }
-
 
 // init populates two arrays of random choices, intChoices and stringChoices,
 // which will be used by various test and benchmark functions.

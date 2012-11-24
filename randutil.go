@@ -23,19 +23,18 @@ var MinMaxError = errors.New("Min cannot be greater than max.")
 func IntRange(min, max int) (int, error) {
 	var result int
 	switch {
+	case min > max:
+		// Fail with error
+		return result, MinMaxError
 	case max == min:
 		result = max
 	case max > min:
-		// Choose a random string lenth between min and max
 		maxRand := max - min
 		b, err := rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
 		if err != nil {
 			return result, err
 		}
 		result = min + int(b.Int64())
-	case min > max:
-		// Fail with error
-		return result, MinMaxError
 	}
 	return result, nil
 }
