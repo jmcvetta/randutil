@@ -1,6 +1,17 @@
 # randutil - Random number/string utilities for the Go language
 
-Package documentation at: [pkgdoc.org](http://go.pkgdoc.org/github.com/jmcvetta/randutil)
+This package contains assorted utility functions for creating random numbers
+and strings.  I use this package quite a bit, especially when testing other
+projects.   However I make no claims about the cryptographic security or other
+properties of the random(-ish?) numbers and strings it produces.  Use at your
+own risk.
 
-This package contains assorted utility functions.  Most everything here should
-be considered experimental, and should be used at your own risk.
+## API Documentation
+
+See GoDoc for [automatically generated
+documentation](http://godoc.org/github.com/jmcvetta/randutil).
+
+
+## Status
+
+[![Build Status](https://drone.io/github.com/jmcvetta/randutil/status.png)](https://drone.io/github.com/jmcvetta/randutil/latest)
