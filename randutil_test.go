@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Jason McVetta.  This is Free Software, released under the 
+// Copyright (c) 2012 Jason McVetta.  This is Free Software, released under the
 // terms of the GPL v3.  See http://www.gnu.org/copyleft/gpl.html for details.
 
 package randutil
@@ -58,7 +58,7 @@ func TestIntRange(t *testing.T) {
 	}
 }
 
-// Test that the strings we produce are actually random.  This is done by 
+// Test that the strings we produce are actually random.  This is done by
 // comparing two 50,000 character generated random strings and checking that
 // they differ.  It is quite unlikely, but not strictly impossible, that two
 // truly random strings will be identical.

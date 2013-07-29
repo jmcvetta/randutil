@@ -1,7 +1,7 @@
-// Copyright (c) 2012 Jason McVetta.  This is Free Software, released under the 
+// Copyright (c) 2012 Jason McVetta.  This is Free Software, released under the
 // terms of the GPL v3.  See http://www.gnu.org/copyleft/gpl.html for details.
 
-// Package randutil provides various convenience functions for dealing with 
+// Package randutil provides various convenience functions for dealing with
 // random numbers and strings.
 package randutil
 
@@ -13,7 +13,9 @@ import (
 
 const (
 	// Set of characters to use for generating random strings
-	Alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"
+	Alphabet     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	Numerals     = "1234567890"
+	Alphanumeric = Alphabet + Numerals
 	Ascii        = Alphanumeric + "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`"
 )
 
@@ -39,7 +41,7 @@ func IntRange(min, max int) (int, error) {
 	return result, nil
 }
 
-// String returns a random string n characters long, composed of entities 
+// String returns a random string n characters long, composed of entities
 // from charset.
 func String(n int, charset string) (string, error) {
 	var randstr string // Random string to return
@@ -57,7 +59,7 @@ func String(n int, charset string) (string, error) {
 	return randstr, nil
 }
 
-// StringRange returns a random string at least min and no more than max 
+// StringRange returns a random string at least min and no more than max
 // characters long, composed of entitites from charset.
 func StringRange(min, max int, charset string) (string, error) {
 	//
@@ -77,7 +79,7 @@ func StringRange(min, max int, charset string) (string, error) {
 	return randstr, nil
 }
 
-// AlphaRange returns a random alphanumeric string at least min and no more 
+// AlphaRange returns a random alphanumeric string at least min and no more
 // than max characters long.
 func AlphaStringRange(min, max int) (string, error) {
 	return StringRange(min, max, Alphanumeric)
