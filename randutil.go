@@ -48,7 +48,7 @@ func String(n int, charset string) (string, error) {
 	charlen := len(charset)
 	// This is probably not the most efficient algorithm
 	for i := 0; i < n; i++ {
-		b, err := rand.Int(rand.Reader, big.NewInt(int64(charlen-1)))
+		b, err := rand.Int(rand.Reader, big.NewInt(int64(charlen)))
 		if err != nil {
 			return randstr, err
 		}
