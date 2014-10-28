@@ -15,3 +15,4 @@ documentation](http://godoc.org/github.com/jmcvetta/randutil).
 ## Status
 
 [![Build Status](https://drone.io/github.com/jmcvetta/randutil/status.png)](https://drone.io/github.com/jmcvetta/randutil/latest)
+[![Travis Build Status](https://travis-ci.org/jmcvetta/randutil.png)](https://travis-ci.org/jmcvetta/randutil)
