@@ -49,7 +49,7 @@ func String(n int, charset string) (string, error) {
 	for i := 0; i < n; i++ {
 		b, err := rand.Int(rand.Reader, charlen)
 		if err != nil {
-			return randstr, err
+			return "", err
 		}
 		r := int(b.Int64())
 		randstr[i] = charset[r]
