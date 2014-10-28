@@ -44,19 +44,17 @@ func IntRange(min, max int) (int, error) {
 // String returns a random string n characters long, composed of entities
 // from charset.
 func String(n int, charset string) (string, error) {
-	var randstr string // Random string to return
-	charlen := len(charset)
-	// This is probably not the most efficient algorithm
+	randstr := make([]byte, n) // Random string to return
+	charlen := big.NewInt(int64(len(charset)))
 	for i := 0; i < n; i++ {
-		b, err := rand.Int(rand.Reader, big.NewInt(int64(charlen-1)))
+		b, err := rand.Int(rand.Reader, charlen)
 		if err != nil {
 			return randstr, err
 		}
 		r := int(b.Int64())
-		c := string(charset[r])
-		randstr += c
+		randstr[i] = charset[r]
 	}
-	return randstr, nil
+	return string(randstr), nil
 }
 
 // StringRange returns a random string at least min and no more than max
