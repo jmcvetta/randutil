@@ -5,7 +5,7 @@ package randutil
 
 import (
 	"fmt"
-	"github.com/bmizerany/assert"
+	"github.com/stretchr/testify/assert"
 	"log"
 	"math"
 	"math/rand"
@@ -134,7 +134,7 @@ func TestWeightedChoice(t *testing.T) {
 	for i, c := range choices[0 : len(choices)-1] {
 		next := choices[i+1]
 		expr := chosenCount[c] < chosenCount[next]
-		assert.T(t, expr)
+		assert.True(t, expr)
 	}
 }
 
