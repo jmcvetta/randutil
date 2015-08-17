@@ -5,7 +5,7 @@ package randutil
 
 import (
 	"fmt"
-	"github.com/bmizerany/assert"
+	"github.com/jadengore/assert"
 	"log"
 	"math"
 	"math/rand"
