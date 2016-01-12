@@ -21,23 +21,19 @@ const (
 
 var MinMaxError = errors.New("Min cannot be greater than max.")
 
-// IntRange returns a random integer in the range from min to max.
+// IntRange returns a random integer in the range from min to max inclusive.
 func IntRange(min, max int) (int, error) {
 	var result int
-	switch {
-	case min > max:
+	if min > max {
 		// Fail with error
 		return result, MinMaxError
-	case max == min:
-		result = max
-	case max > min:
-		maxRand := max - min
-		b, err := rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
-		if err != nil {
-			return result, err
-		}
-		result = min + int(b.Int64())
 	}
+	maxRand := max - min + 1
+	b, err := rand.Int(rand.Reader, big.NewInt(int64(maxRand)))
+	if err != nil {
+		return result, err
+	}
+	result = min + int(b.Int64())
 	return result, nil
 }
 
@@ -92,7 +88,7 @@ func AlphaString(n int) (string, error) {
 func ChoiceString(choices []string) (string, error) {
 	var winner string
 	length := len(choices)
-	i, err := IntRange(0, length)
+	i, err := IntRange(0, length - 1)
 	winner = choices[i]
 	return winner, err
 }
@@ -101,7 +97,7 @@ func ChoiceString(choices []string) (string, error) {
 func ChoiceInt(choices []int) (int, error) {
 	var winner int
 	length := len(choices)
-	i, err := IntRange(0, length)
+	i, err := IntRange(0, length - 1)
 	winner = choices[i]
 	return winner, err
 }
@@ -126,7 +122,7 @@ func WeightedChoice(choices []Choice) (Choice, error) {
 	for _, c := range choices {
 		sum += c.Weight
 	}
-	r, err := IntRange(0, sum)
+	r, err := IntRange(0, sum - 1)
 	if err != nil {
 		return ret, err
 	}
