@@ -57,6 +57,14 @@ func String(n int, charset string) (string, error) {
 	return string(randstr), nil
 }
 
+func MustString(n int, charset string) string {
+	if value, err := String(n, charset); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
+}
+
 // StringRange returns a random string at least min and no more than max
 // characters long, composed of entitites from charset.
 func StringRange(min, max int, charset string) (string, error) {
@@ -77,15 +85,39 @@ func StringRange(min, max int, charset string) (string, error) {
 	return randstr, nil
 }
 
+func MustStringRange(min, max int, charset string) string {
+	if value, err := StringRange(min, max, charset); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
+}
+
 // AlphaRange returns a random alphanumeric string at least min and no more
 // than max characters long.
 func AlphaStringRange(min, max int) (string, error) {
 	return StringRange(min, max, Alphanumeric)
 }
 
+func MustAlphaStringRange(min, max int) string {
+	if value, err := AlphaStringRange(min, max); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
+}
+
 // AlphaString returns a random alphanumeric string n characters long.
 func AlphaString(n int) (string, error) {
 	return String(n, Alphanumeric)
+}
+
+func MustAlphaString(n int) string {
+	if value, err := AlphaString(n); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
 }
 
 // ChoiceString returns a random selection from an array of strings.
@@ -97,6 +129,14 @@ func ChoiceString(choices []string) (string, error) {
 	return winner, err
 }
 
+func MustChoiceString(choices []string) string {
+	if value, err := ChoiceString(choices); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
+}
+
 // ChoiceInt returns a random selection from an array of integers.
 func ChoiceInt(choices []int) (int, error) {
 	var winner int
@@ -104,6 +144,14 @@ func ChoiceInt(choices []int) (int, error) {
 	i, err := IntRange(0, length)
 	winner = choices[i]
 	return winner, err
+}
+
+func MustChoiceInt(choices []int) int {
+	if value, err := ChoiceInt(choices); err != nil {
+		panic(err)
+	} else {
+		return value
+	}
 }
 
 // A Choice contains a generic item and a weight controlling the frequency with
